@@ -208,9 +208,9 @@ public abstract class AbstractPushService<T extends AbstractPushService<T>> {
             }
 
             if (headers.containsKey("Crypto-Key")) {
-                headers.put("Crypto-Key", headers.get("Crypto-Key") + ";p256ecdsa=" + Base64.getUrlEncoder().encodeToString(pk));
+                headers.put("Crypto-Key", headers.get("Crypto-Key") + ";p256ecdsa=" + Base64.getUrlEncoder().withoutPadding().encodeToString(pk));
             } else {
-                headers.put("Crypto-Key", "p256ecdsa=" + Base64.getUrlEncoder().encodeToString(pk));
+                headers.put("Crypto-Key", "p256ecdsa=" + Base64.getUrlEncoder().withoutPadding().encodeToString(pk));
             }
         } else if (notification.isFcm() && getGcmApiKey() != null) {
             headers.put("Authorization", "key=" + getGcmApiKey());
