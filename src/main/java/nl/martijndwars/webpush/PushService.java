@@ -39,14 +39,14 @@ public class PushService extends AbstractPushService<PushService> {
      *
      * @param notification
      * @param encoding
-     * @return
+     * @return The http status
      * @throws GeneralSecurityException
      * @throws IOException
      * @throws JoseException
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    public HttpResponse send(Notification notification, Encoding encoding) throws GeneralSecurityException, IOException, JoseException, ExecutionException, InterruptedException {
+    public int send(Notification notification, Encoding encoding) throws GeneralSecurityException, IOException, JoseException, ExecutionException, InterruptedException {
         HttpRequest request = prepareRequest(notification, encoding);
         URL endpoint = new URL(notification.getEndpoint());
         HttpURLConnection con = (HttpURLConnection) endpoint.openConnection();
@@ -56,10 +56,10 @@ public class PushService extends AbstractPushService<PushService> {
         if (request.getBody() != null) {
             con.getOutputStream().write(request.getBody());
         }
-        return new HttpResponse(con.getResponseCode());
+        return con.getResponseCode();
     }
 
-    public HttpResponse send(Notification notification) throws GeneralSecurityException, IOException, JoseException, ExecutionException, InterruptedException {
+    public int send(Notification notification) throws GeneralSecurityException, IOException, JoseException, ExecutionException, InterruptedException {
         return send(notification, Encoding.AESGCM);
     }
 
